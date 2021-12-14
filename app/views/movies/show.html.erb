@@ -9,3 +9,26 @@
 <% end %>
 
 <p>Average age of Actors: <%= @movie.avg_age %></p>
+
+
+## i have been able to get this work, it keeps saying i'm missing get /movies
+for some reason. I was trying to add an actor the same way I did in the project and
+its not working
+
+
+<h2>Add an actor to this movie </h2>
+<%= form_with url: "/actor_movies/new",  method: :post, local: true do |f| %>
+  <%= f.label :add_actor %>
+  <%= f.text_field :add_actor  %>
+  <%= f.submit "submit" %>
+<% end %>
+
+Could this work on a get patch?
+
+
+<h2>Add an actor to this movie </h2>
+<%= form_with url: "/actor_movies/new",  method: :post, local: true do |f| %>
+  <%= f.label :add_actor %>
+  <%= f.text_field :add_actor  %>
+  <%= f.submit "submit" %>
+<% end %>

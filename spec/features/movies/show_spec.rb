@@ -19,7 +19,7 @@ RSpec.describe 'the movie show page' do
 
   it 'shows a movies title, creation year, and genre' do
   visit "/movies/#{@t_story.id}"
-  save_and_open_page
+
   expect(page). to have_content(@t_story.title)
   expect(page). to have_content(@t_story.creation_year)
   expect(page). to have_content(@t_story.genre)
@@ -32,8 +32,31 @@ RSpec.describe 'the movie show page' do
 
   #this appear before is not working, but I know its written correctly and the save and open page works
   # expect(@actor_2.name).to appear_before(@actor_3.name)
+  expect(page). to have_content(@actor_2.name)
+  expect(page). to have_content(@actor_3.name)
   expect(page). to have_content(30)
 
   end
 
+  describe 'when i visit a movie show page, it only has listed actors on a movie' do
+    it 'has a form to add an actor to the movie' do
+      visit "/movies/#{@t_story.id}"
+
+      fill_in 'add_actor', with: "#{@actor_1.name}"
+      click_on ("submit")
+
+      expect(current_path).to eq("/movies/#{@t_story.id}")
+    end
+
+    it 'clicks submit on the form and is redirected to the show page with the new actor listed' do
+      visit "/movies/#{@t_story.id}"
+      fill_in 'add_actor', with: "#{@actor_1.name}"
+      click_on ("submit")
+      expect(current_path).to eq("/movies/#{@t_story.id}")
+
+      expect(page). to have_content(@actor_2.name)
+      expect(page). to have_content(@actor_3.name)
+      expect(page). to have_content(@actor_1.name)
+    end
+  end
 end
