@@ -1,11 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Actor, type: :model do
-  describe "relationships" do
-    it { should have_many :actor_movies}
-    it {should have_many(:movies).through(:actor_movies)}
-  end
-
+RSpec.describe 'the movie show page' do
   before(:each) do
     @studio_1 = Studio.create!(name: "Universal", location: 'Beverly Hills')
     @studio_2 = Studio.create!(name: "Paramount", location: 'Hollywood')
@@ -22,12 +17,21 @@ RSpec.describe Actor, type: :model do
     @actor_movie5 = ActorMovie.create!(movie_id: @t_story.id, actor_id: @actor_2.id)
   end
 
-  it 'lists all actors from youngest to oldest' do
-    binding.pry
-    expect(@t_story.actors.actor_list).to eq([@actor_2,@actor_3])
+  it 'shows a movies title, creation year, and genre' do
+  visit "/movies/#{@t_story.id}"
+  save_and_open_page
+  expect(page). to have_content(@t_story.title)
+  expect(page). to have_content(@t_story.creation_year)
+  expect(page). to have_content(@t_story.genre)
+
   end
 
-  xit 'lists the average age of all actors in the movie' do
-    expect(@t_story.avg_age).to eq(30)
+  xit 'has a list of actors from youngest to olders and average age of all actors' do
+
+  visit "/movies/#{@t_story.id}"
+  expect(@actor_2).to appear_before(@actor_3)
+  expect(page). to have_content(34)
+
   end
+
 end
